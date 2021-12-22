@@ -28,4 +28,14 @@ contract ThreeSwap is Context, Ownable, ERC20 {
     require(to_ != address(0), 'recipient address cannot be zero address');
     require(IERC20(token_).transfer(to_, amount_), 'could not transfer tokens');
   }
+
+  /** @dev Release Ether stuck in contract
+   *  @param to_ Address to send Ether to
+   *  @param amount_ Amount of Ether to send
+   */
+  function returnEther(address to_, uint256 amount_) external onlyOwner {
+    require(to_ != address(0), 'recipient address cannot be zero address');
+    address payable _to = payable(to_);
+    _to.transfer(amount_);
+  }
 }

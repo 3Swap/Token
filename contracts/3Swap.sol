@@ -14,6 +14,16 @@ contract ThreeSwap is Context, Ownable, ERC20 {
     _mint(_msgSender(), amount_);
   }
 
+  mapping(address => bool) _permitted;
+
+  modifier onlyPermitted() {
+    require(
+      _permitted[_msgSender()],
+      'only permitted addresses can call this function'
+    );
+    _;
+  }
+
   /** @dev Release ERC20 tokens stuck in contract
    *  @param token_ Token contract address
    *  @param to_ Address to send the token to
@@ -37,5 +47,23 @@ contract ThreeSwap is Context, Ownable, ERC20 {
     require(to_ != address(0), 'recipient address cannot be zero address');
     address payable _to = payable(to_);
     _to.transfer(amount_);
+  }
+
+  function mint(address account_, uint256 amount_) external onlyPermitted {
+    _mint(account_, amount_);
+  }
+
+  function burn(address account_, uint256 amount_) external onlyPermitted {
+    _burn(account_, amount_);
+  }
+
+  function addPermitted(address account_) external onlyOwner {
+    require(!_permitted[account_], 'address already granted permission');
+    _permitted[account_] = true;
+  }
+
+  function removePermitted(address account_) external onlyOwner {
+    require(_permitted[account_], 'address has not been granted permission');
+    _permitted[account_] = false;
   }
 }

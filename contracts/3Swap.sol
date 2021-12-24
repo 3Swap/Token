@@ -49,19 +49,33 @@ contract ThreeSwap is Context, Ownable, ERC20 {
     _to.transfer(amount_);
   }
 
+  /** @dev Function to mint tokens. Can only be called by permitted accounts
+   *  @param account_ The address to mint tokens for
+   *  @param amount_ The amount of tokens to mint
+   */
   function mint(address account_, uint256 amount_) external onlyPermitted {
     _mint(account_, amount_);
   }
 
+  /** @dev Function to burn tokens. Can only be called by permitted accounts
+   *  @param account_ The address whose tokens should be burned
+   *  @param amount_ The amount of tokens to burn
+   */
   function burn(address account_, uint256 amount_) external onlyPermitted {
     _burn(account_, amount_);
   }
 
+  /** @dev Function to give an address minting and burning permission. Can only be called by the contract owner
+   *  @param account_ The address to give permission to
+   */
   function addPermitted(address account_) external onlyOwner {
     require(!_permitted[account_], 'address already granted permission');
     _permitted[account_] = true;
   }
 
+  /** @dev Function to rescind permission from an address. Can only be called by the contract owner
+   *  @param account_ The address to rescind permission from
+   */
   function removePermitted(address account_) external onlyOwner {
     require(_permitted[account_], 'address has not been granted permission');
     _permitted[account_] = false;

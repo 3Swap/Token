@@ -1,2 +1,5 @@
 node_modules
 migrations
+*Flat.sol
+.env
+build

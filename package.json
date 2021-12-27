@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write **/**/*.{js,json,sol}"
+    "format": "prettier --write **/**/*.{js,json,sol}",
+    "deploy:bsc": "truffle migrate --network bsc_mainnet",
+    "flatten": "truffle-flattener contracts/3Swap.sol > 3SwapFlat.sol"
   },
   "repository": {
     "type": "git",
